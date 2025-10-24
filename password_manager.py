@@ -43,12 +43,12 @@ class PasswordManager:
             confirm = getpass.getpass("Confirm master password: ")
             
             if master != confirm:
-                print("❌ Passwords don't match. Try again.")
+                print(" Passwords don't match. Try again.")
                 continue
             
             strength = self._check_password_strength(master)
             if strength < 3:
-                print("⚠️  Weak master password. Please use a stronger one.")
+                print("  Weak master password. Please use a stronger one.")
                 print("   Tips: Use 12+ characters, mix uppercase, lowercase, numbers, and symbols")
                 continue
             
@@ -72,7 +72,7 @@ class PasswordManager:
         self.passwords = {}
         self._save_passwords()
         
-        print("✅ Master password set successfully!")
+        print(" Master password set successfully!")
         return True
     
     def authenticate(self):
@@ -99,14 +99,14 @@ class PasswordManager:
                 
                 # Load passwords
                 self._load_passwords()
-                print("✅ Authentication successful!")
+                print(" Authentication successful!")
                 return True
             else:
                 attempts -= 1
                 if attempts > 0:
-                    print(f"❌ Incorrect password. {attempts} attempts remaining.")
+                    print(f" Incorrect password. {attempts} attempts remaining.")
                 else:
-                    print("❌ Authentication failed. Exiting.")
+                    print(" Authentication failed. Exiting.")
                     return False
         
         return False
@@ -120,7 +120,7 @@ class PasswordManager:
                 decrypted_data = self.fernet.decrypt(encrypted_data)
                 self.passwords = json.loads(decrypted_data.decode())
             except Exception as e:
-                print(f"⚠️  Error loading passwords: {e}")
+                print(f"  Error loading passwords: {e}")
                 self.passwords = {}
         else:
             self.passwords = {}
@@ -174,7 +174,7 @@ class PasswordManager:
     def add_password(self, service, username, password=None, notes=""):
         """Add a new password entry"""
         if service in self.passwords:
-            overwrite = input(f"⚠️  Entry for '{service}' already exists. Overwrite? (y/n): ")
+            overwrite = input(f"  Entry for '{service}' already exists. Overwrite? (y/n): ")
             if overwrite.lower() != 'y':
                 print("❌ Cancelled.")
                 return
@@ -186,7 +186,7 @@ class PasswordManager:
                 length = int(length) if length else 16
                 symbols = input("Include symbols? (y/n): ").lower() == 'y'
                 password = self.generate_password(length, symbols)
-                print(f"✅ Generated password: {password}")
+                print(f" Generated password: {password}")
             else:
                 password = getpass.getpass("Enter password: ")
         
@@ -198,12 +198,12 @@ class PasswordManager:
         }
         
         self._save_passwords()
-        print(f"✅ Password for '{service}' saved successfully!")
+        print(f" Password for '{service}' saved successfully!")
     
     def get_password(self, service):
         """Retrieve a password"""
         if service not in self.passwords:
-            print(f"❌ No entry found for '{service}'")
+            print(f" No entry found for '{service}'")
             return
         
         entry = self.passwords[service]
@@ -217,7 +217,7 @@ class PasswordManager:
         copy = input("\nCopy password to clipboard? (y/n): ")
         if copy.lower() == 'y':
             pyperclip.copy(entry['password'])
-            print("✅ Password copied to clipboard!")
+            print(" Password copied to clipboard!")
     
     def list_services(self):
         """List all stored services"""
@@ -225,7 +225,7 @@ class PasswordManager:
             print("📭 No passwords stored yet.")
             return
         
-        print(f"\n📚 Stored passwords ({len(self.passwords)}):")
+        print(f"\n Stored passwords ({len(self.passwords)}):")
         print("-" * 60)
         for service, entry in sorted(self.passwords.items()):
             strength_stars = '⭐' * entry['strength']
@@ -237,11 +237,11 @@ class PasswordManager:
             print(f"❌ No entry found for '{service}'")
             return
         
-        confirm = input(f"⚠️  Delete password for '{service}'? (y/n): ")
+        confirm = input(f"  Delete password for '{service}'? (y/n): ")
         if confirm.lower() == 'y':
             del self.passwords[service]
             self._save_passwords()
-            print(f"✅ Password for '{service}' deleted.")
+            print(f" Password for '{service}' deleted.")
         else:
             print("❌ Cancelled.")
     
@@ -266,12 +266,12 @@ class PasswordManager:
         
         print("\n🔍 Password Strength Audit")
         print("-" * 60)
-        print(f"✅ Strong passwords ({len(strong)}): {', '.join(strong) if strong else 'None'}")
-        print(f"⚠️  Moderate passwords ({len(moderate)}): {', '.join(moderate) if moderate else 'None'}")
-        print(f"❌ Weak passwords ({len(weak)}): {', '.join(weak) if weak else 'None'}")
+        print(f" Strong passwords ({len(strong)}): {', '.join(strong) if strong else 'None'}")
+        print(f"  Moderate passwords ({len(moderate)}): {', '.join(moderate) if moderate else 'None'}")
+        print(f" Weak passwords ({len(weak)}): {', '.join(weak) if weak else 'None'}")
         
         if weak:
-            print("\n💡 Recommendation: Update weak passwords immediately!")
+            print("\n Recommendation: Update weak passwords immediately!")
 
 def main():
     pm = PasswordManager()
@@ -319,11 +319,11 @@ def main():
             length = int(length) if length else 16
             symbols = input("Include symbols? (y/n): ").lower() == 'y'
             password = pm.generate_password(length, symbols)
-            print(f"\n✅ Generated password: {password}")
+            print(f"\n Generated password: {password}")
             copy = input("Copy to clipboard? (y/n): ")
             if copy.lower() == 'y':
                 pyperclip.copy(password)
-                print("✅ Copied!")
+                print(" Copied!")
         
         elif choice == '6':
             pm.audit_passwords()
@@ -333,7 +333,8 @@ def main():
             break
         
         else:
-            print("❌ Invalid option. Please try again.")
+            print(" Invalid option. Please try again.")
 
 if __name__ == "__main__":
+
     main()
