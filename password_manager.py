@@ -176,7 +176,7 @@ class PasswordManager:
         if service in self.passwords:
             overwrite = input(f"  Entry for '{service}' already exists. Overwrite? (y/n): ")
             if overwrite.lower() != 'y':
-                print("❌ Cancelled.")
+                print(" Cancelled.")
                 return
         
         if password is None:
@@ -234,7 +234,7 @@ class PasswordManager:
     def delete_password(self, service):
         """Delete a password entry"""
         if service not in self.passwords:
-            print(f"❌ No entry found for '{service}'")
+            print(f" No entry found for '{service}'")
             return
         
         confirm = input(f"  Delete password for '{service}'? (y/n): ")
@@ -243,12 +243,12 @@ class PasswordManager:
             self._save_passwords()
             print(f" Password for '{service}' deleted.")
         else:
-            print("❌ Cancelled.")
+            print(" Cancelled.")
     
     def audit_passwords(self):
         """Audit all passwords for strength"""
         if not self.passwords:
-            print("📭 No passwords to audit.")
+            print(" No passwords to audit.")
             return
         
         weak = []
@@ -264,7 +264,7 @@ class PasswordManager:
             else:
                 strong.append(service)
         
-        print("\n🔍 Password Strength Audit")
+        print("\n Password Strength Audit")
         print("-" * 60)
         print(f" Strong passwords ({len(strong)}): {', '.join(strong) if strong else 'None'}")
         print(f"  Moderate passwords ({len(moderate)}): {', '.join(moderate) if moderate else 'None'}")
@@ -338,3 +338,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
